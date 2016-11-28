@@ -1,0 +1,19 @@
+{
+  "name": "phase-1",
+  "version": "1.0.0",
+  "description": "Wow, first day at Unicorn.Rentals. I found the orientation pretty cringeworthy, but someone else in my group didn't laugh at the jokes and they were fired. Yikes! Still though, the chowder taps and ball pit are the best perks I've ever had at a startup.",
+  "main": "server.js",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "prelude-ls": "^1.1.2",
+    "request": "^2.79.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
