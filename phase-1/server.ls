@@ -2,11 +2,18 @@ _ = require 'prelude-ls'
 express = require 'express'
 body-parser = require 'body-parser'
 request = require 'request'
+Redis = require 'ioredis'
 
 API_TOKEN = '00fd67af2a'
 API_BASE = 'https://dashboard.cash4code.net/score'
-
 port = 8080
+redis = new Redis do
+   port: 6379          # Redis port
+   host: '127.0.0.1'   # Redis host
+   family: 4           # 4 (IPv4) or 6 (IPv6)
+   password: 'password'
+   db: 0
+
 app = express!
 
 app.use body-parser.json!
@@ -40,9 +47,11 @@ app.post '/', (req, res) ->
       request.post do
          do
             url: API_BASE + '/' + msg-id
+            headers:
+               "x-gameday-token": API_TOKEN
             body: body
          (err, resp, body) ->
-            console.log "Response posted #{err}"
+            console.log "Response posted #{err} #{body}"
 
 app.listen port, ->
    console.log "Unicorns app listening on port #{port}"
