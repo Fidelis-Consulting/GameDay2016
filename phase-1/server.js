@@ -43,7 +43,7 @@
       });
     }
   });
-  app.listen(80, function(){
+  app.listen(port, function(){
     return console.log("Unicorns app listening on port " + port);
   });
   function in$(x, xs){
