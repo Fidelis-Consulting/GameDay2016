@@ -2,17 +2,19 @@ _ = require 'prelude-ls'
 express = require 'express'
 body-parser = require 'body-parser'
 request = require 'request'
-Redis = require 'ioredis'
+#Redis = require 'ioredis'
 
 API_TOKEN = '00fd67af2a'
 API_BASE = 'https://dashboard.cash4code.net/score'
 port = 8080
+/*
 redis = new Redis do
    port: 6379          # Redis port
    host: '127.0.0.1'   # Redis host
    family: 4           # 4 (IPv4) or 6 (IPv6)
    password: 'password'
    db: 0
+*/
 
 app = express!
 
@@ -35,10 +37,14 @@ app.post '/', (req, res) ->
 
    if part is undefined then
       part = { total-parts: total-parts, parts: [] }
-      part.parts[part-number] = data
       MESSAGES."#{msg-id}" = part
 
-   if undefined not in part then
+   part.parts[part-number] = data
+   res.send 'OK'
+
+   console.log "#{JSON.stringify part.parts, null, 2}"
+
+   if undefined not in part.parts then
       console.log "Got all parts for #{msg-id}..."
 
       body = part.parts |> _.Str.join ''
