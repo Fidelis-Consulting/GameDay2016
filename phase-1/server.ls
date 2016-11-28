@@ -44,5 +44,5 @@ app.post '/', (req, res) ->
          (err, resp, body) ->
             console.log "Response posted #{err}"
 
-app.listen 8080, ->
+app.listen 80, ->
    console.log "Unicorns app listening on port #{port}"
