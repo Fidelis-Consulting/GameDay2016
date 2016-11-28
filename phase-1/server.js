@@ -33,7 +33,21 @@
     if (part === undefined) {
       part = {
         totalParts: totalParts,
-        parts: []
+        parts: (function(){
+          var i$, ref$, len$, results$ = [];
+          for (i$ = 0, len$ = (ref$ = (fn$())).length; i$ < len$; ++i$) {
+            part = ref$[i$];
+            results$.push(undefined);
+          }
+          return results$;
+          function fn$(){
+            var i$, to$, results$ = [];
+            for (i$ = 0, to$ = totalParts; i$ < to$; ++i$) {
+              results$.push(i$);
+            }
+            return results$;
+          }
+        }())
       };
       MESSAGES[msgId + ""] = part;
     }

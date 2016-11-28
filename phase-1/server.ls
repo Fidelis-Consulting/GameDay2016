@@ -36,7 +36,7 @@ app.post '/', (req, res) ->
    part = MESSAGES."#{msg-id}"
 
    if part is undefined then
-      part = { total-parts: total-parts, parts: [] }
+      part = { total-parts: total-parts, parts: [undefined for part in [0 til total-parts]] }
       MESSAGES."#{msg-id}" = part
 
    part.parts[part-number] = data
