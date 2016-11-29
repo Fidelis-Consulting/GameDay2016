@@ -17,16 +17,5 @@ $data = file_get_contents('php://stdin');
 
 $data = json_decode($data);
 
-$message = $redis->get($data->Id);
-
-if($message == false)
-{
-	$redis->set($data->Id,array($data));
-}
-else
-{
-	$message[] = $data;
-
-	$redis->set($data->Id,$message);
-}
+$redis->lPush($data->Id,$data);
 
