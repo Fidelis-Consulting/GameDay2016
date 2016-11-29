@@ -16,69 +16,69 @@
   API_BASE = 'https://dashboard.cash4code.net/score';
   processKeys = function(keys){
     return _.each(function(key){
-      redis.ttl(key).then(function(result){
-        if (result < 0) {
+      return redis.ttl(key).then(function(ttl){
+        if (ttl < 0) {
           console.log("Setting expiry for " + key);
-          return redis.expire(key, 120);
+          redis.expire(key, 120);
         }
-      });
-      return redis.llen(key).then(function(len){
-        return redis.lrange(key, 0, len);
-      }).then(function(items){
-        var msgId, totalParts, parts, parts1, body;
-        console.log("Raw: " + JSON.stringify(items, null, 2));
-        items = _.map(function(i){
-          return JSON.parse(i);
-        })(
-        items);
-        if (items.length === 0) {
-          return;
-        }
-        msgId = function(it){
-          return it.Id;
-        }(
-        _.head(
-        items));
-        totalParts = function(it){
-          return it.TotalParts;
-        }(
-        _.head(
-        items));
-        parts = _.sortBy(function(it){
-          return it.PartNumber;
-        })(
-        items);
-        parts1 = _.map(function(partNumber){
-          return _.find(function(it){
-            return it.PartNumber === partNumber;
+        return redis.llen(key).then(function(len){
+          return redis.lrange(key, 0, len);
+        }).then(function(items){
+          var msgId, totalParts, parts, parts1, body;
+          console.log("Raw: " + JSON.stringify(items, null, 2) + " TTL: " + ttl);
+          items = _.map(function(i){
+            return JSON.parse(i);
           })(
-          parts);
-        })(
-        (function(){
-          var i$, to$, results$ = [];
-          for (i$ = 0, to$ = totalParts; i$ < to$; ++i$) {
-            results$.push(i$);
+          items);
+          if (items.length === 0) {
+            return;
           }
-          return results$;
-        }()));
-        if (!in$(undefined, parts1)) {
-          body = _.Str.join('')(
-          _.map(function(it){
-            return it.Data;
+          msgId = function(it){
+            return it.Id;
+          }(
+          _.head(
+          items));
+          totalParts = function(it){
+            return it.TotalParts;
+          }(
+          _.head(
+          items));
+          parts = _.sortBy(function(it){
+            return it.PartNumber;
           })(
-          parts1));
-          redis.del(key);
-          console.log("***** Posting body: " + body);
-          return request.post({
-            url: API_BASE + '/' + msgId,
-            headers: {
-              "x-gameday-token": API_TOKEN
-            },
-            body: body
-          }, function(err, resp, body){
-            return console.log("***** Response posted " + err + " " + body);
-          });
-        }
+          items);
+          parts1 = _.map(function(partNumber){
+            return _.find(function(it){
+              return it.PartNumber === partNumber;
+            })(
+            parts);
+          })(
+          (function(){
+            var i$, to$, results$ = [];
+            for (i$ = 0, to$ = totalParts; i$ < to$; ++i$) {
+              results$.push(i$);
+            }
+            return results$;
+          }()));
+          if (!in$(undefined, parts1)) {
+            body = _.Str.join('')(
+            _.map(function(it){
+              return it.Data;
+            })(
+            parts1));
+            redis.del(key);
+            console.log("***** Posting body: " + body);
+            return request.post({
+              url: API_BASE + '/' + msgId,
+              headers: {
+                "x-gameday-token": API_TOKEN
+              },
+              body: body
+            }, function(err, resp, body){
+              return console.log("***** Response posted " + err + " " + body);
+            });
+          }
+        });
       });
     })(
     keys);
