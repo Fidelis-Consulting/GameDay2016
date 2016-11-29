@@ -24,23 +24,23 @@ process-keys = (keys) ->
          .then (items) ->
             console.log "Raw: #{JSON.stringify items}"
             items = items |> _.map (i) -> JSON.parse i
-            console.log "Items: #{JSON.stringify items, null, 2}"
+            #console.log "Items: #{JSON.stringify items, null, 2}"
 
             # Someone else might have grabbed it
             if items.length == 0 then return
 
             msg-id = items |> _.head |> (.Id)
             total-parts = items |> _.head |> (.TotalParts)
-            console.log "Total-parts: #{total-parts}"
+            #console.log "Total-parts: #{total-parts}"
 
             parts = items |> _.sort-by (.PartNumber)
-            console.log "Items: #{JSON.stringify parts, null, 2}"
+            #console.log "Items: #{JSON.stringify parts, null, 2}"
 
             parts1 = [0 til total-parts] |> _.map (part-number) -> (parts |> _.find (.PartNumber == part-number))
-            console.log "parts1: #{JSON.stringify parts1, null, 2}"
+            #console.log "parts1: #{JSON.stringify parts1, null, 2}"
 
             if undefined not in parts1 then
-               console.log "All parts present!"
+               #console.log "All parts present!"
                body = parts1 |> _.map (.Data) |> _.Str.join ''
 
                # delete from redis

@@ -27,7 +27,6 @@
           return JSON.parse(i);
         })(
         items);
-        console.log("Items: " + JSON.stringify(items, null, 2));
         if (items.length === 0) {
           return;
         }
@@ -41,12 +40,10 @@
         }(
         _.head(
         items));
-        console.log("Total-parts: " + totalParts);
         parts = _.sortBy(function(it){
           return it.PartNumber;
         })(
         items);
-        console.log("Items: " + JSON.stringify(parts, null, 2));
         parts1 = _.map(function(partNumber){
           return _.find(function(it){
             return it.PartNumber === partNumber;
@@ -60,9 +57,7 @@
           }
           return results$;
         }()));
-        console.log("parts1: " + JSON.stringify(parts1, null, 2));
         if (!in$(undefined, parts1)) {
-          console.log("All parts present!");
           body = _.Str.join('')(
           _.map(function(it){
             return it.Data;
