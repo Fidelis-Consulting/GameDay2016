@@ -17,6 +17,14 @@ process-keys = (keys) ->
    #console.log "#{JSON.stringify keys, null, 2}"
    keys |> _.each (key) ->
       #console.log "Processing #{key}..."
+
+      # Setup an expiry if not already set
+      redis.ttl key
+         .then (result) ->
+            if result < 0 then
+               console.log "Setting expiry for #{key}"
+               redis.expire key, 120
+
       redis.llen key
          .then (len) ->
             #console.log "Length: #{len}"

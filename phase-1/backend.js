@@ -16,6 +16,12 @@
   API_BASE = 'https://dashboard.cash4code.net/score';
   processKeys = function(keys){
     return _.each(function(key){
+      redis.ttl(key).then(function(result){
+        if (result < 0) {
+          console.log("Setting expiry for " + key);
+          return redis.expire(key, 120);
+        }
+      });
       return redis.llen(key).then(function(len){
         return redis.lrange(key, 0, len);
       }).then(function(items){
