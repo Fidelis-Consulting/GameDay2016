@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 import json
-import time
 import urllib2
 
 import boto3
@@ -9,7 +8,6 @@ from boto3 import client
 
 STREAM = "disposableunicorns2"
 REDIS_SERVER = 'unicorns3.tvmx6i.0001.euc1.cache.amazonaws.com'
-
 
 if __name__ == "__main__":
     url = 'https://dashboard.cash4code.net/team/00fd67af2a/apicreds?_=1480380076941'
@@ -42,7 +40,7 @@ if __name__ == "__main__":
     #     print(key['Key'])
 
 
-
+    # https://blog.insightdatascience.com/getting-started-with-aws-serverless-architecture-tutorial-on-kinesis-and-dynamodb-using-twitter-38a1352ca16d#.ko4yogwhg
 
 
     kinesis = boto3.client('kinesis',
@@ -53,24 +51,43 @@ if __name__ == "__main__":
                            )
 
     shard_id = "shardId-000000000000"  # only one shard!
-    pre_shard_it = kinesis.get_shard_iterator(StreamName="twitter", ShardId=shard_id, ShardIteratorType="LATEST")
+    pre_shard_it = kinesis.get_shard_iterator(StreamName=STREAM, ShardId=shard_id, ShardIteratorType="LATEST")
     shard_it = pre_shard_it["ShardIterator"]
     while 1 == 1:
-        out = kinesis.get_records(ShardIterator=shard_it, Limit=1)
-        shard_it = out["NextShardIterator"]
-        print out;
-        time.sleep(1.0)
+        event = kinesis.get_records(ShardIterator=shard_it, Limit=1)
+        shard_it = event["NextShardIterator"]
+        # print event;
+        for record in event['Records']:
+            # Kinesis data is base64 encoded so decode here
+            print record['Data']
+            data = json.loads(record['Data'])
+            print ('Id: ' + data['Id'])
 
+            # payload = base64.b64decode(record['Data'])
+            # parse json
+            # message = json.loads(payload)
+            # parse message
+            # msg_id = message['Id']
+            # part_number = message['PartNumber']
+            # data = message['Data']
+            # print msg_id
+            # put the part received into dynamo
+            # proceed = store_message(msg_id, part_number, data)
+            # if proceed is False:
+            #     # we have already processed this message so don't proceed
+            #     print("skipping duplicate message")
+            #     continue
+            # # Try to get the parts of the message from the Dynamo.
+            # check_messages(msg_id)
 
+            # data = json.loads(out)
 
-    # data = json.loads(file_data)
-    #
-    # print ('TotalParts: ' + str(data['TotalParts']))
-    # print ('PartNumber: ' + str(data['PartNumber']))
-    # print ('Id: ' + data['Id'])
-    # print ('Data: ' + data['Data'])
-    #
-    # r_server = redis.Redis('unicorns.a0yryy.0001.euc1.cache.amazonaws.com')
-    #
-    # r_server.rpush(data['Id'], json.dumps(data))
-    #
+            # print ('TotalParts: ' + str(data['TotalParts']))
+            # print ('PartNumber: ' + str(data['PartNumber']))
+            # print ('Id: ' + data['Id'])
+            # print ('Data: ' + data['Data'])
+            #
+            r_server = redis.Redis(REDIS_SERVER)
+            #
+            r_server.rpush(data['Id'], json.dumps(data))
+            #
