@@ -11,7 +11,7 @@
 
 
 $redis = new Redis();
-$redis->pconnect('EC INSTANCE', 6379);
+$redis->connect('EC INSTANCE', 6379);
 
 $data = file_get_contents('php://stdin');
 
