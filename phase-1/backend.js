@@ -24,8 +24,7 @@
         return redis.llen(key).then(function(len){
           return redis.lrange(key, 0, len);
         }).then(function(items){
-          var msgId, totalParts, parts, parts1, body;
-          console.log("Raw: " + JSON.stringify(items) + " TTL: " + ttl);
+          var msgId, totalParts, parts, parts1, body, url;
           items = _.map(function(i){
             return JSON.parse(i);
           })(
@@ -66,10 +65,11 @@
               return it.Data;
             })(
             parts1));
+            url = API_BASE + '/' + msgId;
             redis.del(key);
-            console.log("***** Posting body: " + body);
+            console.log("***** Posting " + url + " -> " + body);
             return request.post({
-              url: API_BASE + '/' + msgId,
+              url: url,
               headers: {
                 "x-gameday-token": API_TOKEN
               },

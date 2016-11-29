@@ -31,7 +31,7 @@ process-keys = (keys) ->
                   #console.log "Length: #{len}"
                   redis.lrange key, 0, len
                .then (items) ->
-                  console.log "Raw: #{JSON.stringify items} TTL: #{ttl}"
+                  #console.log "Raw: #{JSON.stringify items} TTL: #{ttl}"
                   items = items |> _.map (i) -> JSON.parse i
                   #console.log "Items: #{JSON.stringify items, null, 2}"
 
@@ -51,15 +51,16 @@ process-keys = (keys) ->
                   if undefined not in parts1 then
                      #console.log "All parts present!"
                      body = parts1 |> _.map (.Data) |> _.Str.join ''
+                     url = API_BASE + '/' + msg-id
 
                      # delete from redis
                      redis.del key
 
                      # pass to scoreboard
-                     console.log "***** Posting body: #{body}"
+                     console.log "***** Posting #{url} -> #{body}"
                      request.post do
                         do
-                           url: API_BASE + '/' + msg-id
+                           url: url
                            headers:
                               "x-gameday-token": API_TOKEN
                            body: body
