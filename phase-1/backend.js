@@ -16,17 +16,15 @@
   API_BASE = 'https://dashboard.cash4code.net/score';
   processKeys = function(keys){
     return _.each(function(key){
-      console.log("Processing " + key + "...");
       return redis.llen(key).then(function(len){
-        console.log("Length: " + len);
         return redis.lrange(key, 0, len);
       }).then(function(items){
         var msgId, totalParts, parts, parts1, body;
+        console.log("Raw: " + JSON.stringify(items, null, 2));
         items = _.map(function(i){
           return JSON.parse(i);
         })(
         items);
-        console.log("Items: " + JSON.stringify(items, null, 2));
         if (items.length === 0) {
           return;
         }
@@ -40,12 +38,10 @@
         }(
         _.head(
         items));
-        console.log("Total-parts: " + totalParts);
         parts = _.sortBy(function(it){
           return it.PartNumber;
         })(
         items);
-        console.log("Items: " + JSON.stringify(parts, null, 2));
         parts1 = _.map(function(partNumber){
           return _.find(function(it){
             return it.PartNumber === partNumber;
@@ -59,16 +55,14 @@
           }
           return results$;
         }()));
-        console.log("parts1: " + JSON.stringify(parts1, null, 2));
         if (!in$(undefined, parts1)) {
-          console.log("All parts present!");
           body = _.Str.join('')(
           _.map(function(it){
             return it.Data;
           })(
           parts1));
           redis.del(key);
-          console.log("Posting body: " + body);
+          console.log("***** Posting body: " + body);
           return request.post({
             url: API_BASE + '/' + msgId,
             headers: {
@@ -76,7 +70,7 @@
             },
             body: body
           }, function(err, resp, body){
-            return console.log("Response posted " + err + " " + body);
+            return console.log("***** Response posted " + err + " " + body);
           });
         }
       });
