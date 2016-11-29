@@ -1,10 +1,11 @@
 _ = require 'prelude-ls'
 Redis = require 'ioredis'
 request = require 'request'
+Promise = require 'bluebird'
 
 redis = new Redis do
    port: 6379          # Redis port
-   host: '127.0.0.1'   # Redis host
+   host: 'unicorns.a0yryy.0001.euc1.cache.amazonaws.com'   # Redis host
    family: 4           # 4 (IPv4) or 6 (IPv6)
    password: ''
    db: 0
@@ -13,7 +14,7 @@ API_TOKEN = '00fd67af2a'
 API_BASE = 'https://dashboard.cash4code.net/score'
 
 process-keys = (keys) ->
-   console.log "#{JSON.stringify keys, null, 2}"
+   #console.log "#{JSON.stringify keys, null, 2}"
    keys |> _.each (key) ->
       console.log "Processing #{key}..."
       redis.llen key
@@ -23,6 +24,8 @@ process-keys = (keys) ->
          .then (items) ->
             items = items |> _.map (i) -> JSON.parse i
             console.log "Items: #{JSON.stringify items, null, 2}"
+
+            if items.length == 0 then return
 
             msg-id = items |> _.head |> (.Id)
             total-parts = items |> _.head |> (.TotalParts)
@@ -55,9 +58,14 @@ process-keys = (keys) ->
 process-keys-done = ->
    console.log ""
 
-stream =
-   redis.scanStream do
-      match: "*"
-keys = []
-stream.on 'data', process-keys
-stream.on 'end', process-keys-done
+run = ->
+   stream =
+      redis.scanStream do
+         match: "*"
+   stream.on 'data', process-keys
+   stream.on 'end', ->
+      run!
+
+setTimeout do
+   -> run!
+   100
