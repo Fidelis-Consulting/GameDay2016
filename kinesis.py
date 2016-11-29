@@ -2,7 +2,7 @@
 
 import json
 import urllib2
-
+import redis
 import boto3
 from boto3 import client
 
@@ -87,7 +87,7 @@ if __name__ == "__main__":
             # print ('Id: ' + data['Id'])
             # print ('Data: ' + data['Data'])
             #
-            r_server = redis.Redis(REDIS_SERVER)
+            #r_server = redis.Redis(REDIS_SERVER)
             #
-            r_server.rpush(data['Id'], json.dumps(data))
+            #r_server.rpush(data['Id'], json.dumps(data))
             #
