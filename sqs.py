@@ -9,7 +9,7 @@ import boto3
 
 # https://dashboard.cash4code.net/team/00fd67af2a/apicreds?_=1480380076941
 
-REDIS_SERVER = 'unicorns.a0yryy.0001.euc1.cache.amazonaws.com'
+REDIS_SERVER = 'unicorns3.tvmx6i.0001.euc1.cache.amazonaws.com'
 QUEUE = 'disposableunicorns2'
 
 if __name__ == "__main__":
