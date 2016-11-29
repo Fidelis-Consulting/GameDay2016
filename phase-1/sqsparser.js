@@ -26,7 +26,7 @@ var app = Consumer.create({
         var client = redis.createClient(port, host);
         client.on('connect', function() {
             console.log('connected to redis');
-            client.rpush(msgBody.Id, msgBody);
+            client.rpush(msgBody.Id, JSON.stringify(msgBody));
             console.log('Pushed message to redis');
         });
 
