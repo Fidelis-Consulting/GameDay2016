@@ -5,8 +5,8 @@ Promise = require 'bluebird'
 
 redis = new Redis do
    port: 6379          # Redis port
-   host: 'unicorns.a0yryy.0001.euc1.cache.amazonaws.com'   # Redis host
-   #host: '127.0.0.1'   # Redis host
+   #host: 'unicorns.a0yryy.0001.euc1.cache.amazonaws.com'   # Redis host
+   host: '127.0.0.1'   # Redis host
    family: 4           # 4 (IPv4) or 6 (IPv6)
    password: ''
    db: 0

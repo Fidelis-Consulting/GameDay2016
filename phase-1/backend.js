@@ -7,7 +7,7 @@
   Promise = require('bluebird');
   redis = new Redis({
     port: 6379,
-    host: 'unicorns.a0yryy.0001.euc1.cache.amazonaws.com',
+    host: '127.0.0.1',
     family: 4,
     password: '',
     db: 0
