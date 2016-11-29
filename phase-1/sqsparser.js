@@ -2,10 +2,11 @@ var AWS = require('aws-sdk');
 
 AWS.config.update({
     region: 'eu-central-1',
-    accessKeyId: 'ASIAIJYNKAGIJ22LZCVQ',
-    secretAccessKey: 'lIIkKPe0ly9L3mCK1q54TlXwxONysf897A/H4F20',
-    sessionToken: 'FQoDYXdzEDoaDNjQcmpIKJ9/De0UryLZARBHIQunhsHKHcg08ehGS3aITyrxW5NvzyTlHqo/5nsKPD2cXVxz8x9DVxhSv2YWOEE1KMC1T3GhLFdEOPVJI5DvyBZwr7E9jwEzr9STl49oqn0TAfsoAv3aUEajCg196WW6EEmSVT6lywM+Y+tINt/kiKVKw5btWIaovxHnK7je529bmgKi9NcZ/Fghnq61v7WlQfk42xCgbTSE7HMoO+1pd2UcJUBGTkJRGnazJKTBr8PPMH7mBH+6jHMEOXWONJfRSpB7sF9zA/akNpZkdq5nkG1XVvOfO+Qou63zwQU='
+    accessKeyId: 'ASIAIY4QDTMMJHD7JGUA',
+    secretAccessKey: 'U1iTmnu/sQw1QRtGkCsJTSiG6FyBegag5yX1PElq',
+    sessionToken: 'FQoDYXdzEDsaDEvVJ7dMMSdEwwE7OyLZAUAnFvb0RTuD2iGhyRKe1EwGSS9q3XSLvBv8KlZSuq6ZnqF4EEIanpGKXcm4+fmYKpC82w2I7ouvrwueb5NoJAf9aD99lhvee/9IOwPWNRtOywS+mWzTm74ehqUOwbBE4G7cWRe4tXLLf70+DzBg7og53qS+bVfbvu//yKUIhWwc5/cfWlSVqg4nqbwoiUhY+6tN/JIYG6xHH+y39VcqaSKkqdhdvfIq4ncdzwCYC3eEmhehNMC0JXMiexfaZpzwM9Mp5IbK5ba467yDKFmZvw6y1+YuGyWEDVso5srzwQU='
 });
+
 
 var Consumer = require('sqs-consumer');
 var redis = require('redis');
