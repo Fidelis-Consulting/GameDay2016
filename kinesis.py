@@ -1,10 +1,15 @@
 #!/usr/bin/env python
 
 import json
+import time
 import urllib2
 
 import boto3
 from boto3 import client
+
+STREAM = "disposableunicorns2"
+REDIS_SERVER = 'unicorns3.tvmx6i.0001.euc1.cache.amazonaws.com'
+
 
 if __name__ == "__main__":
     url = 'https://dashboard.cash4code.net/team/00fd67af2a/apicreds?_=1480380076941'
@@ -39,7 +44,6 @@ if __name__ == "__main__":
 
 
 
-    STREAM = "disposableunicorns"
 
     kinesis = boto3.client('kinesis',
                            aws_access_key_id=ACCESS_KEY,
@@ -47,6 +51,15 @@ if __name__ == "__main__":
                            aws_session_token=SESSION_TOKEN,
                            region_name='eu-central-1'
                            )
+
+    shard_id = "shardId-000000000000"  # only one shard!
+    pre_shard_it = kinesis.get_shard_iterator(StreamName="twitter", ShardId=shard_id, ShardIteratorType="LATEST")
+    shard_it = pre_shard_it["ShardIterator"]
+    while 1 == 1:
+        out = kinesis.get_records(ShardIterator=shard_it, Limit=1)
+        shard_it = out["NextShardIterator"]
+        print out;
+        time.sleep(1.0)
 
 
 
