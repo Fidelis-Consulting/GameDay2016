@@ -7,10 +7,10 @@ Args:
     API Base (https://...)
 
 """
-from flask import Flask, request
-import logging
 import argparse
 import urllib2
+
+from flask import Flask, request
 
 # logging.basicConfig(level=logging.DEBUG)
 
@@ -84,6 +84,7 @@ def process_message(msg):
         resp = urllib2.urlopen(req)
         resp.close()
         print response
+        del MESSAGES[msg_id]
 
     return 'OK'
 
@@ -92,7 +93,7 @@ if __name__ == "__main__":
     # By default, we disable threading for "debugging" purposes.
     # This will cause the app to block requests, which means that you miss out on some points,
     # and fail ALB healthchecks, but whatever I know I'm getting fired on Friday.
-    APP.run(host="0.0.0.0", port="80")
-    
+    APP.run(host="0.0.0.0", port="80", threaded=True)
+
     # Use this to enable threading:
     # APP.run(host="0.0.0.0", port="80", threaded=True)

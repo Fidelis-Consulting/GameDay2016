@@ -35,7 +35,7 @@ wget https://nodejs.org/dist/v6.9.1/node-v6.9.1-linux-x64.tar.xz;
 tar xvf node-v6.9.1-linux-x64.tar.xz;
 cd node-v6.9.1-linux-x64;
 cp bin/node /usr/bin/;
-ln -s /usr/src/node/node-v6.9.1-linux-x64/lib/node_modules/npm/bin/npm-cli.js /usr/bin/npm;
+ln -s /usr/src/node-v6.9.1-linux-x64/lib/node_modules/npm/bin/npm-cli.js /usr/bin/npm;
 yum -y install git php56 php56-pecl-redis httpd24;
 npm install pm2 -g
 
