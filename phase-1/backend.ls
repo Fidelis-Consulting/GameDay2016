@@ -16,13 +16,13 @@ API_BASE = 'https://dashboard.cash4code.net/score'
 process-keys = (keys) ->
    #console.log "#{JSON.stringify keys, null, 2}"
    keys |> _.each (key) ->
-      console.log "Processing #{key}..."
+      #console.log "Processing #{key}..."
       redis.llen key
          .then (len) ->
-            console.log "Length: #{len}"
+            #console.log "Length: #{len}"
             redis.lrange key, 0, len
          .then (items) ->
-            console.log "Raw: #{JSON.stringify items}"
+            console.log "Raw: #{JSON.stringify items, null, 2}"
             items = items |> _.map (i) -> JSON.parse i
             #console.log "Items: #{JSON.stringify items, null, 2}"
 

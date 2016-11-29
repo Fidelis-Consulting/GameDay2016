@@ -16,13 +16,11 @@
   API_BASE = 'https://dashboard.cash4code.net/score';
   processKeys = function(keys){
     return _.each(function(key){
-      console.log("Processing " + key + "...");
       return redis.llen(key).then(function(len){
-        console.log("Length: " + len);
         return redis.lrange(key, 0, len);
       }).then(function(items){
         var msgId, totalParts, parts, parts1, body;
-        console.log("Raw: " + JSON.stringify(items));
+        console.log("Raw: " + JSON.stringify(items, null, 2));
         items = _.map(function(i){
           return JSON.parse(i);
         })(
