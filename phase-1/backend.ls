@@ -31,7 +31,7 @@ process-keys = (keys) ->
                   #console.log "Length: #{len}"
                   redis.lrange key, 0, len
                .then (items) ->
-                  console.log "Raw: #{JSON.stringify items, null, 2} TTL: #{ttl}"
+                  console.log "Raw: #{JSON.stringify items} TTL: #{ttl}"
                   items = items |> _.map (i) -> JSON.parse i
                   #console.log "Items: #{JSON.stringify items, null, 2}"
 
