@@ -49,6 +49,8 @@ cd /var/www/;
 ln -s /data/GameDay2016/ html;
 cd /data/GameDay2016/;
 ln -s handle_requests.php index.php;
+service httpd start;
+chkconfig httpd on;
 
 pm2 start /data/GameDay2016/sqsparser.js;
 pm2 start /data/GameDay2016/backend.js;
