@@ -69,7 +69,7 @@
           })(
           parts1));
           redis.del(key);
-          console.log("Posting body: " + body);
+          console.log("***** Posting body: " + body);
           return request.post({
             url: API_BASE + '/' + msgId,
             headers: {
@@ -77,7 +77,7 @@
             },
             body: body
           }, function(err, resp, body){
-            return console.log("Response posted " + err + " " + body);
+            return console.log("***** Response posted " + err + " " + body);
           });
         }
       });

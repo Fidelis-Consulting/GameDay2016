@@ -47,7 +47,7 @@ process-keys = (keys) ->
                redis.del key
 
                # pass to scoreboard
-               console.log "Posting body: #{body}"
+               console.log "***** Posting body: #{body}"
                request.post do
                   do
                      url: API_BASE + '/' + msg-id
@@ -55,7 +55,7 @@ process-keys = (keys) ->
                         "x-gameday-token": API_TOKEN
                      body: body
                   (err, resp, body) ->
-                     console.log "Response posted #{err} #{body}"
+                     console.log "***** Response posted #{err} #{body}"
 
 process-keys-done = ->
    console.log ""
