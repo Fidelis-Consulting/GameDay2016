@@ -55,4 +55,6 @@ chkconfig httpd on;
 pm2 start /data/GameDay2016/sqsparser.js;
 pm2 start /data/GameDay2016/backend.js;
 
+nohup python /data/GameDay2016/s3.py &
+
 ```
