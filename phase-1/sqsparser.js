@@ -31,7 +31,7 @@ var app = Consumer.create({
         });
 
 
-        //return done();
+        return done();
 
     }
 });
