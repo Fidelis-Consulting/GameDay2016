@@ -25,6 +25,7 @@
           return redis.lrange(key, 0, len);
         }).then(function(items){
           var msgId, totalParts, parts, parts1, body, url;
+          console.log("Raw: " + JSON.stringify(items) + " TTL: " + ttl);
           items = _.map(function(i){
             return JSON.parse(i);
           })(
