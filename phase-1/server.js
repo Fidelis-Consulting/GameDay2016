@@ -8,6 +8,14 @@
   API_TOKEN = '00fd67af2a';
   API_BASE = 'https://dashboard.cash4code.net/score';
   port = 8080;
+  /*
+  redis = new Redis do
+     port: 6379          # Redis port
+     host: '127.0.0.1'   # Redis host
+     family: 4           # 4 (IPv4) or 6 (IPv6)
+     password: 'password'
+     db: 0
+  */
   app = express();
   app.use(bodyParser.json());
   MESSAGES = {};
@@ -25,25 +33,44 @@
     if (part === undefined) {
       part = {
         totalParts: totalParts,
-        parts: []
+        parts: (function(){
+          var i$, ref$, len$, results$ = [];
+          for (i$ = 0, len$ = (ref$ = (fn$())).length; i$ < len$; ++i$) {
+            part = ref$[i$];
+            results$.push(undefined);
+          }
+          return results$;
+          function fn$(){
+            var i$, to$, results$ = [];
+            for (i$ = 0, to$ = totalParts; i$ < to$; ++i$) {
+              results$.push(i$);
+            }
+            return results$;
+          }
+        }())
       };
-      part.parts[partNumber] = data;
       MESSAGES[msgId + ""] = part;
     }
-    if (!in$(undefined, part)) {
+    part.parts[partNumber] = data;
+    res.send('OK');
+    console.log(JSON.stringify(part.parts, null, 2) + "");
+    if (!in$(undefined, part.parts)) {
       console.log("Got all parts for " + msgId + "...");
       body = _.Str.join('')(
       part.parts);
       console.log("Body: " + body);
       return request.post({
         url: API_BASE + '/' + msgId,
+        headers: {
+          "x-gameday-token": API_TOKEN
+        },
         body: body
       }, function(err, resp, body){
-        return console.log("Response posted " + err);
+        return console.log("Response posted " + err + " " + body);
       });
     }
   });
-  app.listen(8080, function(){
+  app.listen(port, function(){
     return console.log("Unicorns app listening on port " + port);
   });
   function in$(x, xs){
