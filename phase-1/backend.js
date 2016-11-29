@@ -22,6 +22,7 @@
         return redis.lrange(key, 0, len);
       }).then(function(items){
         var msgId, totalParts, parts, parts1, body;
+        console.log("Raw: " + JSON.stringify(items));
         items = _.map(function(i){
           return JSON.parse(i);
         })(
@@ -68,7 +69,7 @@
           })(
           parts1));
           redis.del(key);
-          console.log("Posting body: " + body);
+          console.log("***** Posting body: " + body);
           return request.post({
             url: API_BASE + '/' + msgId,
             headers: {
@@ -76,7 +77,7 @@
             },
             body: body
           }, function(err, resp, body){
-            return console.log("Response posted " + err + " " + body);
+            return console.log("***** Response posted " + err + " " + body);
           });
         }
       });

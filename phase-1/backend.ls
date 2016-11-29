@@ -22,9 +22,11 @@ process-keys = (keys) ->
             console.log "Length: #{len}"
             redis.lrange key, 0, len
          .then (items) ->
+            console.log "Raw: #{JSON.stringify items}"
             items = items |> _.map (i) -> JSON.parse i
             console.log "Items: #{JSON.stringify items, null, 2}"
 
+            # Someone else might have grabbed it
             if items.length == 0 then return
 
             msg-id = items |> _.head |> (.Id)
@@ -45,7 +47,7 @@ process-keys = (keys) ->
                redis.del key
 
                # pass to scoreboard
-               console.log "Posting body: #{body}"
+               console.log "***** Posting body: #{body}"
                request.post do
                   do
                      url: API_BASE + '/' + msg-id
@@ -53,7 +55,7 @@ process-keys = (keys) ->
                         "x-gameday-token": API_TOKEN
                      body: body
                   (err, resp, body) ->
-                     console.log "Response posted #{err} #{body}"
+                     console.log "***** Response posted #{err} #{body}"
 
 process-keys-done = ->
    console.log ""
