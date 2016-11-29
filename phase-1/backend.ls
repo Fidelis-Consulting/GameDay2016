@@ -22,9 +22,11 @@ process-keys = (keys) ->
             console.log "Length: #{len}"
             redis.lrange key, 0, len
          .then (items) ->
+            console.log "Raw: #{JSON.stringify items}"
             items = items |> _.map (i) -> JSON.parse i
             console.log "Items: #{JSON.stringify items, null, 2}"
 
+            # Someone else might have grabbed it
             if items.length == 0 then return
 
             msg-id = items |> _.head |> (.Id)
